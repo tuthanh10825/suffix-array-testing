@@ -41,7 +41,7 @@ public:
 			for (int i = 0; i < n; ++i)
 				temp_SA_index[i] = (SA_index[i] + n - k) % n;
 					
-			vector <int> cou(10, 0);
+			vector <int> cou(10000, 0);
 			vector <int> temp_vector(n);
 			for (int count = 1; count <= n; count *= 10000)
 			{
@@ -49,10 +49,14 @@ public:
 				std::fill(cou.begin(), cou.end(), 0);
 				for (int i = 0; i < n; ++i)
 					++cou[primary_key[temp_SA_index[i]] / count % 10000];
+
 				for (int i = 1; i < 10000; ++i)
 					cou[i] += cou[i - 1];
+
 				for (int i = n - 1; i >= 0; --i)
-					temp_vector[--cou[primary_key[temp_SA_index[i]] / count % 10000]] = temp_SA_index[i];
+				{
+					temp_vector[--cou[(primary_key[temp_SA_index[i]] / count) % 10000]] = temp_SA_index[i];
+				}
 				temp_SA_index = std::move(temp_vector);
 			}
 
